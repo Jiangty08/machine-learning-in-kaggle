@@ -1,55 +1,49 @@
 #!/usr/bin/env python
 # coding=utf-8
-from numpy  import *
-import os, operator
+from numpy import *
+from utils import *
+import os
+import operator
 
-def classify(trainMatrix, trainLabel, predictMatrix, k):
+
+def classify(trainData, trainLabel, predictMatrix, k):
     predictResult = []
+    j = 0
     for predictVec in predictMatrix:
-        distMatrix = trainMatrix - predictVec
+        # calc oucilid distance
+        distMatrix = trainData - predictVec
         distMatrix = distMatrix ** 2
         distSum = distMatrix.sum(axis=1)
         distSq = distSum ** 0.5
+
+        # sort all distance
         sortedDistIndex = distSq.argsort()
+
+        # choose k nearest neighbors
         classCount = {}
         for i in xrange(k):
             voteLabel = trainLabel[sortedDistIndex[i]]
             classCount[voteLabel] = classCount.get(voteLabel, 0) + 1
+
+        # sort classes in k nearest neighbors
         sortedClassIndex = sorted(classCount.iteritems(),
-                key=operator.itemgetter(1), reverse=True)
+                                  key=operator.itemgetter(1), reverse=True)
+        print "the %d data predict to be: %d" % (j, sortedClassIndex[0][0])
+        j += 1
+        # return the max voted class as predictResult
         predictResult.append(sortedClassIndex[0][0])
     return predictResult
 
 
-# kaggle digit dataSet
-def loadDataSet2():
+
+def main():
+    trainData, trainLabel, testData = loadDataSetKaggle()
+    k = 10
+    #predictResult = classify(trainData[0:1000, :], trainLabel[0:1000], testData[0:100, :], k)
+    predictResult = classify(trainData, trainLabel, testData, k)
+    genSubmission(predictResult)
     return
 
-# a simple dataSet
-def loadDataSet1():
-    trainMatrix = []
-    trainLabel = []
-    testMatrix = []
-    testLabel = []
-    trainDir = "dataSet1/trainingDigits"
-    testDir = "dataSet1/testDigits"
-    for trainFile in os.listdir(trainDir):
-        trainMatrix.append(file2Vec(file(os.path.join(trainDir, trainFile))))
-        trainLabel.append(int(trainFile[0]))
-    for testFile in os.listdir(testDir):
-        testMatrix.append(file2Vec(file(os.path.join(testDir, testFile))))
-        testLabel.append(int(testFile[0]))
-    return trainMatrix, trainLabel, testMatrix, testLabel
-
-def file2Vec(imgFile):
-    returnVec = []
-    for line in imgFile.readlines():
-        returnVec.extend([int(x) for x in list(line)[:-1]])
-    return returnVec
 
 if __name__ == "__main__":
     main()
-
-def main():
-    return
-
