@@ -38,7 +38,7 @@ def classify(trainData, trainLabel, predictMatrix, k):
 
 def main():
     trainData, trainLabel, testData = loadDataSetKaggle()
-    k = 10
+    k = 20
     #predictResult = classify(trainData[0:1000, :], trainLabel[0:1000], testData[0:100, :], k)
     predictResult = classify(trainData, trainLabel, testData, k)
     genSubmission(predictResult)
@@ -47,3 +47,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# todo: kd tree
