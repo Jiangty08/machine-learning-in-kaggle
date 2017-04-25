@@ -23,19 +23,21 @@ def loadDataSetKaggle():
     trainFile = "dataSetKaggle/train.csv"
     testFile = "dataSetKaggle/test.csv"
 
-    lines = file(trainFile).readlines()
-    lines.remove(lines[0])
-    for line in lines:
-        trainMatrix.append([int(x) for x in line.strip("\r\n").split(",")])
-    trainMatrix = array(trainMatrix)
+    with open(trainFile) as openFile:
+        lines = openFile.readlines()
+        lines.remove(lines[0])
+        for line in lines:
+            trainMatrix.append([int(x) for x in line.strip("\r\n").split(",")])
+        trainMatrix = array(trainMatrix)
 
     trainLabel = trainMatrix[:, 0]
     trainData = trainMatrix[:, 1:]
 
-    lines = file(testFile).readlines()
-    lines.remove(lines[0])
-    for line in lines:
-        testMatrix.append([int(x) for x in line.strip("\r\n").split(",")])
+    with open(testFile) as openFile:
+        lines = openFile.readlines()
+        lines.remove(lines[0])
+        for line in lines:
+            testMatrix.append([int(x) for x in line.strip("\r\n").split(",")])
 
     return trainData, trainLabel, array(testMatrix)
 
@@ -48,11 +50,13 @@ def loadDataSetSimple():
     trainDir = "dataSetSimple/trainingDigits"
     testDir = "dataSetSimple/testDigits"
     for trainFile in os.listdir(trainDir):
-        trainData.append(file2Vec(file(os.path.join(trainDir, trainFile))))
-        trainLabel.append(int(trainFile[0]))
+        with open(os.path.join(trainDir, trainFile)) as openFile:
+            trainData.append(file2Vec(openFile))
+            trainLabel.append(int(trainFile[0]))
     for testFile in os.listdir(testDir):
-        testData.append(file2Vec(file(os.path.join(testDir, testFile))))
-        testLabel.append(int(testFile[0]))
+        with open(os.path.join(testDir, testFile)) as openFile:
+            testData.append(file2Vec(openFile))
+            testLabel.append(int(testFile[0]))
     return array(trainData), trainLabel, testData, testLabel
 
 

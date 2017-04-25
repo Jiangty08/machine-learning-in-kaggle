@@ -19,6 +19,8 @@ def
 def trainLogisticRegression(trainData, trainLabel, rate, totalCycle):
     trainX = mat(trainData)
     trainY = mat(trainLabel)
+    thetaVec = np.ones(len(trainData[0]))
+
     for i in xrange(totalCycle):
         thetaVec, cost = gradientDescent(thetaVec, trainX, trainY, rate)
         print "the %d iter, cost is %f" % (i, cost)

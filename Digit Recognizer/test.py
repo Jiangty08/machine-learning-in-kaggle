@@ -2,11 +2,12 @@
 # coding=utf-8
 
 import kNN, os
+import LogisticRegression as LR
 from numpy import *
 from utils import *
 
 
-def testDataSetSimple():
+def testKnnSimple():
     trainData, trainLabel, testData, testLabel = kNN.loadDataSetSimple()
     for k in xrange(1,20,2):
         print "------------k: %d------------" % k
@@ -22,7 +23,7 @@ def testDataSetSimple():
         print "errorRate: %f\n" % errorRate
 
 
-def testDataSetKaggle():
+def testKnnKaggle():
     trainData, trainLabel, testData= kNN.loadDataSetKaggle()
 
     # choose 1000 from train as test data
@@ -42,10 +43,39 @@ def testDataSetKaggle():
         print "the errorRate: %f\n" % errorRate
     return
 
-def main():
-    # testDataSetSimple()
-    testDataSetKaggle()
+def testLRSimple(trainAgain):
+    trainData, trainLabel, testData, testLabel = kNN.loadDataSetSimple()
 
+    # Add bais 1 in Xi
+    baisVec = np.ones(len(trainData))
+    trainData = np.concatenate((basicVec, trainData), axis=1)
+
+    for y in trainLabel
+
+    if trainAgain:
+        thetaVec = LR.trainLogisticRegression(trainData, trainLabel, 0.01,
+                100)
+    else :
+        thetaVec = np.ones(len(trainData[0]))
+
+    predictResult = LR.classify(theraVec, testData)
+
+    errorCount = 0
+    testFile = os.listdir("dataSetSimple/testDigits")
+    for i in xrange(len(testLabel)):
+        if testLabel[i] != predictResult[i]:
+            print "predict error: %s predict to be %d" % (testFile[i],
+                    predictResult[i])
+            errorCount += 1
+    errorRate = float(errorCount) / len(testLabel)
+    print "errorRate: %f\n" % errorRate
+
+
+def main():
+    # testKnnSimple()
+    # testKnnKaggle()
+
+    testLRSimple()
 
 if __name__=='__main__':
     main()
