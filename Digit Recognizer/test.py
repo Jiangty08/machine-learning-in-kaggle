@@ -3,7 +3,7 @@
 
 import kNN, os
 import LogisticRegression as LR
-from numpy import *
+import numpy as np
 from utils import *
 
 
@@ -48,9 +48,13 @@ def testLRSimple(trainAgain):
 
     # Add bais 1 in Xi
     baisVec = np.ones(len(trainData))
-    trainData = np.concatenate((basicVec, trainData), axis=1)
+    trainData = np.concatenate((baisVec, trainData), axis=1)
 
-    for y in trainLabel
+    # just get 0 and 1 data
+    index01 = [index01 for (index01, val) in enumerate(trainLabel) if val == 1
+            or val == 0]
+    trainData = trainData[index01]
+    trainLabel = trainLabel[index01]
 
     if trainAgain:
         thetaVec = LR.trainLogisticRegression(trainData, trainLabel, 0.01,
@@ -75,7 +79,7 @@ def main():
     # testKnnSimple()
     # testKnnKaggle()
 
-    testLRSimple()
+    testLRSimple(True)
 
 if __name__=='__main__':
     main()

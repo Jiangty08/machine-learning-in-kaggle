@@ -13,8 +13,6 @@ def classify(thetaVec, predictData):
         predictResult.append(round(y))
     return predictResult
 
-def
-
 # rtype: thetaVec
 def trainLogisticRegression(trainData, trainLabel, rate, totalCycle):
     trainX = mat(trainData)
@@ -31,7 +29,7 @@ def trainLogisticRegression(trainData, trainLabel, rate, totalCycle):
 def costFunction(inputX, label, thetaVec):
     hx = mat(inputX)*(mat(thetaVec).T)
     y = outputY[i]
-    cost = -y*log(hx) - (1-y)log(1-hx)
+    cost = -y*log(hx) - (1-y)*log(1-hx)
     return cost
 
 # For gradient descent algorithm:
@@ -82,9 +80,9 @@ def costFunctionMulti(inputX, label, thetaMatrix):
     for thetaVec in thetaMatrix:
         hx = mat(inputX)*(mat(thetaVec).T)
         y = outputY[i]
-        cost = -y*log(hx) - (1-y)log(1-hx)
-        outputY[i] -= sigmoid(cost))
-        i ++
+        cost = -y*log(hx) - (1-y)*log(1-hx)
+        outputY[i] -= sigmoid(cost)
+        i += 1
     return sum(outputY)
 
 
