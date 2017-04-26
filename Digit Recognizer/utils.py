@@ -57,7 +57,8 @@ def loadDataSetSimple():
         with open(os.path.join(testDir, testFile)) as openFile:
             testData.append(file2Vec(openFile))
             testLabel.append(int(testFile[0]))
-    return array(trainData), trainLabel, testData, testLabel
+    return array(trainData), array(trainLabel), array(testData),\
+array(testLabel)
 
 
 def file2Vec(imgFile):
