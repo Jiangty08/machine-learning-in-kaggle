@@ -4,18 +4,47 @@
 from numpy import *
 
 ########################################################
-# logistic regression for 2 classify
+# logistic regression for 0-1 classify
 ########################################################
-def classify(thetaVec, predictData):
-    predictResult = []
-    for inputX in predictData:
-        y = sigmoid(mat(inputX)*(mat(thetaVec).T))
-        y = sum(y)
-        predictResult.append(round(y))
-    return predictResult
+def classify(thetaVec, X):
+    """
+    Using Logistic regression to classify data
 
-# rtype: thetaVec
-def trainLogisticRegression(trainData, trainLabel, rate, totalCycle):
+    Parameters
+    ----------
+    thetaVec    : list or ndarray
+        Params of LR model
+    X           : list or ndarray
+        Input data to predict
+
+    Returns
+    -------
+    Y           : list
+        Predict result of input data
+    """
+    Y = []
+    for xi in X:
+        y = sigmoid(mat(xi)*(mat(thetaVec).T))
+        y = sum(y) # mat to float
+        Y.append(round(y))
+    return Y
+
+def trainLogisticRegression(X, Y, rate, cycles):
+    """
+    Train logistic regression model
+
+    Parameters
+    ----------
+    X   : list or ndarray
+        Params of LR model
+    Y   : list or ndarray
+        Input data to predict
+
+    Returns
+    -------
+    Y           : list
+        Predict result of input data
+    """
     thetaVec = zeros(len(trainData[0]))
 
     for i in xrange(totalCycle):
@@ -75,11 +104,15 @@ def classifyMulti(thetaMatrix, predictData):
     return predictResult
 
 # Cost(h(x),y) = -ylog(h(x)) - (1-y)log(1-h(x))
-def costFunctionMulti(inputX, label, thetaMatrix):
+# inputX: 1 x n
+# labelY: 1 x k
+# thetaMatrix: k x n
+# cost  : 1 x k
+def costFunctionMulti(inputX, labelY, thetaMatrix):
 
     Hx = mat(inputX)*(mat(thetaMatrix).T)
     Hx = sigmoid(Hx)
-    cost = -outputY*log(Hx.A) - (1-outputY)*log(1-Hx.A)
+    cost = -labelY*log(Hx.A) - (1-labelY)*log(1-Hx.A)
 
     return cost
 
@@ -88,12 +121,13 @@ def costFunctionMulti(inputX, label, thetaMatrix):
 #   theta = theta - rate * J'/theta'
 # after deduction, we get very simple formula:
 #   thetaVec = thetaVec - rate * (Hx - Y).T * X
-# 1 x k : Hx
-# k x n : thetaVec
+# m x k : Hx
 # m x n : X
 # m x k : Y
+# k x n : thetaMatrix
 # m     : means trainData size is m
 # n     : means features num is n
+# k     : means classes num is k
 def gradientDescentMulti(thetaMatrix, trainData, trainLabel, rate):
     Hx = []
     cost = 0.0
@@ -104,7 +138,7 @@ def gradientDescentMulti(thetaMatrix, trainData, trainLabel, rate):
     Hx = mat(Hx)
     X = mat(trainData)
     Y = mat(trainLabel)
-    thetaMatrix = thetaMatrix- rate * (Hx - Y) * X
+    thetaMatrix = thetaMatrix- rate * (Hx - Y).T * X
     return thetaMatrix, cost
 
 
